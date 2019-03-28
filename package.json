@@ -1,0 +1,34 @@
+{
+	"name": "ocaml_coding_style",
+	"description": "Apply some coding style on ocaml code",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.25.0"
+	},
+	"activationEvents": [
+		"onCommand:ocamlCodingStyle.run"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "ocamlCodingStyle.run",
+				"title": "Apply some coding style on ocaml code"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "ocamlCodingStyle.run",
+				"key": "ctrl+m",
+				"mac": "ctrl+m",
+				"when": "editorTextFocus && !editorReadonly"
+			}
+		]
+	},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"vscode": "^1.1.22"
+	}
+}
