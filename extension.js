@@ -36,11 +36,12 @@ function run() {
 	// text for test type aze = {aaa : rrr ;  bbb : sss; ccc : tttt; ddd : uuuuu}
 	let text_type = ` type azeaz =
 	{
-		aaa : rrr ;
+		aaa : rrr.azeaz list;
 		bbb : sss;
 		ccc : tttt;
 		ddd : uuuuu
 	}`
+
 	// text for test let x = f ~x:y ()  (* no whitespace *)
 	// text for test azae:
 	// aze
@@ -78,21 +79,21 @@ function run() {
 	textreg = textreg.replace(new RegExp(/val[^\S\n\r]+([^\s\:]+) \: /g,'g'),"val $1: ")
 	//vscode.window.showInformationMessage("selection 3 : " + textreg);
 	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{[\s]*)([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
-	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{[\s]*[\S]+\: [\S]+[\s]*;[\s]*)([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
-	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [\S]+[\s]*;[\s]*){2})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
-	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [\S]+[\s]*;[\s]*){3})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
-	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [\S]+[\s]*;[\s]*){4})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
-	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [\S]+[\s]*;[\s]*){5})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
-	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [\S]+[\s]*;[\s]*){6})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
-	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [\S]+[\s]*;[\s]*){7})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
-	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [\S]+[\s]*;[\s]*){8})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
-	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [\S]+[\s]*;[\s]*){9})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
+	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{[\s]*[\S]+\: [^\;]*;[\s]*)([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
+	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [^\;]*;[\s]*){2})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
+	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [^\;]*;[\s]*){3})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
+	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [^\;]*;[\s]*){4})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
+	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [^\;]*;[\s]*){5})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
+	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [^\;]*;[\s]*){6})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
+	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [^\;]*;[\s]*){7})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
+	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [^\;]*;[\s]*){8})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
+	textreg = textreg.replace(new RegExp(/(?<=type[\s]+[\S]+[\s]+=[\s]+{(?:[\s]*[\S]+\: [^\;]*;[\s]*){9})([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
 	//vscode.window.showInformationMessage("selection 4 : " + textreg);
 	textreg = textreg.replace(new RegExp(/\~([\S]+) \: /g,'g'),"\~$1:")
 	//vscode.window.showInformationMessage("selection 5 : " + textreg);
-	textreg = textreg.replace(new RegExp(/[\:]\s[\:]\s/g,'g')," :: ")
+	textreg = textreg.replace(new RegExp(/[^\S\n\r]*[\:]\s*[\:][^\S\n\r]*/g,'g')," :: ")
 	//vscode.window.showInformationMessage("selection 6 : " + textreg);
-	textreg = textreg.replace(new RegExp(/[\:]\s[\=][^\S\n\r]*/g,'g')," := ")
+	textreg = textreg.replace(new RegExp(/[^\S\n\r]*[\:]\s[\=][^\S\n\r]*/g,'g')," := ")
 	//vscode.window.showInformationMessage("selection 7 : " + textreg);
 	textreg = textreg.replace(new RegExp(/\([^\S\n\r]*/g,'g'),"(")
 	textreg = textreg.replace(new RegExp(/([\S])[^\S\n\r]+\)/g,'g'),"$1)")
