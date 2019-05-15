@@ -46,7 +46,7 @@ function run() {
 	// text for test let x = f ~x:y ()  (* no whitespace *)
 	// text for test azae:
 	// aze
-	// text for test azae::aaz azea::  zae azea  ::zae azea:  :  zae azea  :  :zae
+	// text for test azae::aaz azea::  zae azea  ::zae azea:  :  zae azea  :  :zae  aze  :   :   zeae
 	// text for test azae::aaz azea::		zae azea		::zae azea:		:		zae azea		:		:zae
 	// text for test azae:=aaz azea:=  zae azea  :=zae azea:  =  zae azea  :  =zae
 	// text for test azae:=aaz azea:=		zae azea		:=zae azea:		=		zae azea		:		=zae
@@ -70,30 +70,51 @@ function run() {
 	// text for test {
 	//	 	 a
 	// 	 }
-	// aaahgfj{zae}
+
+	// zealk -> zeazeaz->zae ->zaeza-> azeaz zae  ->   qds
+
+	// zealk = zeazeaz=zae =zaeza= azeaz za+=ze aze-=ze aze==aze
 
 	let selection = editor.selection
 	let text = editor.document.getText(selection)
 	//vscode.window.showInformationMessage("selection : " + text);
+	// on ajoute des espaces autours de : par defaut
 	textreg = text.replace(new RegExp(/[^\S\n\r]*\:[^\S\n\r]*/g,'g')," : ")
 	//vscode.window.showInformationMessage("selection 2 : " + textreg);
+	// on gere le cas particulier du val
 	textreg = textreg.replace(new RegExp(/val[^\S\n\r]+([^\s\:]+) \: /g,'g'),"val $1: ")
 	//vscode.window.showInformationMessage("selection 3 : " + textreg);
+	// on gere le cas particulier du type
 	textreg = textreg.replace(new RegExp(/(?<=type.*[\s]*{[\s]*)([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
 	textreg = textreg.replace(new RegExp(/(?<=type.*[\s]*{(?:[\s]*[^\;]*;){1,}[\s]*)([\S]+) \: ([\S]+)/g,'g'),"$1: $2")
 	//vscode.window.showInformationMessage("selection 4 : " + textreg);
+	// on gere le cas particulier des paramètres nommés
 	textreg = textreg.replace(new RegExp(/\~([\S]+) \: /g,'g'),"\~$1:")
 	//vscode.window.showInformationMessage("selection 5 : " + textreg);
-	textreg = textreg.replace(new RegExp(/[^\S\n\r]*[\:]\s*[\:][^\S\n\r]*/g,'g')," :: ")
+	// on reassembles les ::
+	textreg = textreg.replace(new RegExp(/[\:]\s*[\:]/g,'g')," :: ")
 	//vscode.window.showInformationMessage("selection 6 : " + textreg);
-	textreg = textreg.replace(new RegExp(/[^\S\n\r]*[\:]\s[\=][^\S\n\r]*/g,'g')," := ")
+	// on reassembles les :=
+	textreg = textreg.replace(new RegExp(/[\:]\s[\=]/g,'g')," := ")
 	//vscode.window.showInformationMessage("selection 7 : " + textreg);
+	// on supprime les espaces inutils en debut de parenthèse
 	textreg = textreg.replace(new RegExp(/\([^\S\n\r]*/g,'g'),"(")
-	textreg = textreg.replace(new RegExp(/([\S])[^\S\n\r]+\)/g,'g'),"$1)")
-	textreg = textreg.replace(new RegExp(/([\S])[^\S\n\r]+\)/g,'g'),"$1)")
+	// on supprime les espaces inutils en fin de parenthèse
+	textreg = textreg.replace(new RegExp(/(?<=[\S])[^\S\n\r]+\)/g,'g'),")")
+	// on supprime les espaces inutils en debut d'accolade
 	textreg = textreg.replace(new RegExp(/\{[^\S\n\r]*/g,'g'),"{")
-	textreg = textreg.replace(new RegExp(/([\S])[^\S\n\r]+\}/g,'g'),"$1}")
-	textreg = textreg.replace(new RegExp(/([\S])[^\S\n\r]+\}/g,'g'),"$1}")
+	// on supprime les espaces inutils en fin d'accolade
+	textreg = textreg.replace(new RegExp(/(?<=[\S])[^\S\n\r]+\}/g,'g'),"}")
+
+	// gestion des doubles espaces
+	textreg = textreg.replace(new RegExp(/([^\s\*])  ([^\s\*])/g,'g'),"$1 $2")
+	// ajout d'un espace devant in si besoin
+	textreg = textreg.replace(new RegExp(/([\)\}])in/g,'g'),"$1 in")
+	// ajout d'un espace devant autour de -> si besoin
+	textreg = textreg.replace(new RegExp(/([\S]) *-> */g,'g'),"$1 -> ")
+	// ajout d'un espace devant autour de = si besoin
+	textreg = textreg.replace(new RegExp(/(?<=[\w\]\)]) *= *(?=\w)/g,'g')," = ")
+
 	editor.edit(builder => builder.replace(selection, textreg));
 }
 
